@@ -68,5 +68,8 @@ const chosenLink = ref('Преимущества Теle2')
 .chosen-frame {
   color: #1F2229;
   border-bottom: 2px solid #1F2229;
+  transition-timing-function: linear;
+  transition: 0.25s;
+  transform: translateX(0);
 }
 </style>
