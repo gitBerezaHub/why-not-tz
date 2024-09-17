@@ -1,27 +1,39 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js + TypeScript App"/>
+  <MainHeader/>
+  <MenuComponent v-if="!store.isMobile" />
+  <div v-if="store.isOpen && store.isMobile">
+    <MenuComponent/>
+    <LocationFooter/>
+  </div>
 </template>
 
-<script lang="ts">
-import { defineComponent } from 'vue'
-import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts" setup>
+import MainHeader from '@/components/MainHeader.vue'
+import MenuComponent from '@/components/MenuComponent.vue'
+import { useMenuStore } from '@/store/MenuStore'
+import LocationFooter from '@/components/LocationFooter.vue'
+import { onBeforeMount, onMounted, ref } from 'vue'
 
-export default defineComponent({
-  name: 'App',
-  components: {
-    HelloWorld
+const store = useMenuStore()
+
+const width = ref(0)
+const changeWidth = () => {
+  width.value = window.innerWidth
+  store.isMobile = width.value < 750
+  if (!store.isMobile) {
+    store.isOpen = false
   }
+}
+onBeforeMount(() => {
+  width.value = window.innerWidth
+  window.addEventListener('resize', changeWidth)
 })
 </script>
 
 <style lang="scss">
+@import "styles/reset.css";
+
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  font-family: "Roboto", sans-serif;
 }
 </style>
